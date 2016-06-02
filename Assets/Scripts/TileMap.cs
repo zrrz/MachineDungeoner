@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 /// <summary>
-/// Helper class from storing all data about tiles
+/// Helper class from storing all data about a tile
 /// </summary>
 public class TileInfo {
     /// <summary>
@@ -15,23 +15,62 @@ public class TileInfo {
     /// <param name="name">Tile Name.</param>
     /// <param name="width">Width in tiles.</param>
     /// <param name="height">Height in tiles.</param>
-    public TileInfo(ushort tileID, bool isPlaceable, Texture2D texture, string name, byte width, byte height, byte collisionType, byte allowedLayers) {
+    public TileInfo(
+        ushort tileID, 
+        string name, 
+        Texture2D texture, 
+        byte numDroppedItems, 
+        ushort[] itemIDs, 
+        byte width, 
+        byte height, 
+        CollisionType collisionType, 
+        LayerType layer
+    ) {
         this.tileID = tileID;
-        this.isPlaceable = isPlaceable;
-        this.texture = texture;
         this.name = name;
+        this.texture = texture;
+        this.numDroppedItems = numDroppedItems;
+        this.itemIDs = itemIDs;
         this.width = width;
         this.height = height;
         this.collisionType = collisionType;
-        this.allowedLayers = allowedLayers;
+        this.layer = layer;
     }
     public ushort tileID; //Redundant?
-    public bool isPlaceable;
-    public Texture2D texture; //This SHOULD be a pointer to the loaded texture and not replicate
-    public string name; //Maybe unnecesary?
-    byte width, height;
-    byte collisionType;
-    byte allowedLayers; // bit packed bools for what layers it can be placed on
+    public string name;
+    public Texture2D texture; //These SHOULD be a pointer to the loaded texture and not replicate
+
+    public byte numDroppedItems; //How many items are set to drop
+    public ushort[] itemIDs; //ID of item to drop when broken. 0 is Nothing
+
+    public byte width, height;
+
+    //Only for mid layer
+//    public byte collisionType;
+    public CollisionType collisionType;
+//    public byte layer;
+    public LayerType layer;
+
+    //TODO make sure this is correct
+//    public LayerType GetLayer() {
+//        if (layer & 0x1)
+//        {
+//            return LayerType.Back;
+//        }
+//        else if (layer & 0x2)
+//        {
+//            return LayerType.Middle;
+//        }
+//        else if (layer & 0x4)
+//        {
+//            return LayerType.Front;
+//        }
+//    }
+
+    //TODO make sure this works
+//    public CollisionType GetCollisionType() {
+//        return (CollisionType)collisionType & 0xB;
+//    }
 }
 
 /// <summary>
@@ -55,7 +94,7 @@ public enum CollisionType {
 /// <summary>
 /// Tile map singleton for setting and getting all tiles types by ID
 /// </summary>
-public class TileMap : MonoBehaviour {
+public class TileMap : DataMap<TileInfo> {
     
     static TileMap s_instance;
 
@@ -73,9 +112,7 @@ public class TileMap : MonoBehaviour {
         }
     }
 
-	Dictionary<ushort, TileInfo> tileMap;
-
-	void Awake () {
+	public override void Awake () {
         if (s_instance != null)
         {
             Destroy(this);
@@ -85,30 +122,21 @@ public class TileMap : MonoBehaviour {
         {
             s_instance = this;
         }
-		tileMap = new Dictionary<ushort, TileInfo>();
+        base.Awake();
 	}
 
-    public void AddTile(ushort id, bool isPlaceable, Texture2D texture, string name, byte width, byte height, byte collisionType, byte allowedLayers) {
-        AddTile(id, new TileInfo(id, isPlaceable, texture, name, width, height, collisionType, allowedLayers));
-    }
-	
-    public void AddTile(ushort id, TileInfo tileInfo) {
-        if (!tileMap.ContainsKey(id))
-        {
-            tileMap.Add(id, tileInfo);
-        }
-        else
-        {
-            Debug.LogError("tile ID already registered to :" + tileMap[id].name);
-        }
-    }
 
-	public TileInfo GetTile(ushort id) {
-		TileInfo tileInfo;
-		if(tileMap.TryGetValue(id, out tileInfo))
-			return tileInfo;
-		else
-			Debug.LogError("Trying to get a tileID that doesnt exist");
-        return null;
-	}
+    public void AddData(
+        ushort tileID, 
+        string name, 
+        Texture2D texture, 
+        byte numDroppedItems, 
+        ushort[] itemIDs, 
+        byte width, 
+        byte height, 
+        byte collisionType, 
+        byte layer
+    ) {
+        AddData(tileID, name, texture, numDroppedItems, itemIDs, width, height, collisionType, layer);
+    }
 }
