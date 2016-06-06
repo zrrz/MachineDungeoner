@@ -40,14 +40,14 @@ public class TileMap : DataMap<TileInfo> {
     public void AddData(
         ushort tileID, 
         string name, 
-        Texture2D texture, 
+		byte[] texture, 
         byte numDroppedItems, 
         ushort[] itemIDs, 
         byte width, 
         byte height, 
-        byte collisionType, 
-        byte layer
+		CollisionType collisionType, 
+		LayerType layer
     ) {
-        AddData(tileID, name, texture, numDroppedItems, itemIDs, width, height, collisionType, layer);
+		AddData(tileID, new TileInfo(tileID, name, texture, numDroppedItems, itemIDs, width, height, collisionType, layer));
     }
 }

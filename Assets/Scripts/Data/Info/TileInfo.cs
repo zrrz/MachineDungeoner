@@ -30,7 +30,7 @@ public enum LayerType {
 /// Helper class from storing all data about a tile
 /// </summary>
 [System.Serializable]
-public class TileInfo {
+public class TileInfo : BaseInfo {
 	/// <summary>
 	/// Initializes a new instance of the <see cref="TileInfo"/> class.
 	/// </summary>
@@ -43,7 +43,7 @@ public class TileInfo {
 	public TileInfo(
 		ushort tileID, 
 		string name, 
-		Texture2D texture, 
+		byte[] texture, 
 		byte numDroppedItems, 
 		ushort[] itemIDs, 
 		byte width, 
@@ -62,8 +62,6 @@ public class TileInfo {
 		this.layer = layer;
 	}
 	public ushort tileID; //Redundant?
-	public string name;
-	public Texture2D texture; //These SHOULD be a pointer to the loaded texture and not replicate
 
 	public byte numDroppedItems; //How many items are set to drop
 	public ushort[] itemIDs; //ID of item to drop when broken. 0 is Nothing
@@ -92,33 +90,10 @@ public class TileInfo {
 	//        }
 	//    }
 
+
+
 	//TODO make sure this works
 	//    public CollisionType GetCollisionType() {
 	//        return (CollisionType)collisionType & 0xB;
 	//    }
-
-	/// <summary>
-	/// Deserialize the data byte array into a TileInfo.
-	/// </summary>
-	/// <param name="data">Data.</param>
-	public TileInfo Deserialize(byte[] data) {
-		TileInfo tileInfo;
-
-		using(MemoryStream stream = new MemoryStream(data)) {
-			BinaryFormatter formatter = new BinaryFormatter();
-			tileInfo = formatter.Deserialize(stream) as TileInfo;
-			if(null == tileInfo) {
-//				Debug.LogError("Can't deserialize into TileInfo"); //You want to use the generic C# version of console logging instead of the Unity way
-			}
-			return tileInfo; //Might be null
-		}
-	}
-
-	public byte[] Serialize(TileInfo tileInfo) {
-		using(MemoryStream stream = new MemoryStream()) {
-			BinaryFormatter formatter = new BinaryFormatter();
-			formatter.Serialize(stream, tileInfo);
-			return stream.ToArray();
-		}
-	}
 }

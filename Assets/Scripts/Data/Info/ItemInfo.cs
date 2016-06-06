@@ -7,7 +7,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 /// Helper class from storing all data about an item
 /// </summary>
 [System.Serializable]
-public class ItemInfo {
+public class ItemInfo : BaseInfo {
 	/// <summary>
 	/// Initializes a new instance of the <see cref="TileInfo"/> class.
 	/// </summary>
@@ -20,7 +20,7 @@ public class ItemInfo {
 	public ItemInfo(
 		ushort itemID, 
 		string name, 
-		Texture2D texture,
+		byte[] texture,
 		byte rarity,
 		byte allowedLayers,
 		ushort backTileID,
@@ -37,8 +37,6 @@ public class ItemInfo {
 		this.frontTileID = frontTileID;
 	}
 	public ushort itemID; //Redundant?
-	public string name;
-	public Texture2D texture; //Can probably use same image for inv and ground. SHOULD be a pointer to the loaded texture and not replicate
 	public byte rarity;
 
 	public byte width, height;
@@ -63,33 +61,6 @@ public class ItemInfo {
 			return (allowedLayers & 0x4) > 0;
 		}
 		return false;
-	}
-
-	//TODO DRY please
-
-	/// <summary>
-	/// Deserialize the data byte array into a TileInfo.
-	/// </summary>
-	/// <param name="data">Data.</param>
-	public ItemInfo Deserialize(byte[] data) {
-		ItemInfo itemInfo;
-
-		using(MemoryStream stream = new MemoryStream(data)) {
-			BinaryFormatter formatter = new BinaryFormatter();
-			itemInfo = formatter.Deserialize(stream) as ItemInfo;
-			if(null == itemInfo) {
-				//				Debug.LogError("Can't deserialize into ItemInfo"); //You want to use the generic C# version of console logging instead of the Unity way
-			}
-			return itemInfo; //Might be null
-		}
-	}
-
-	public byte[] Serialize(ItemInfo itemInfo) {
-		using(MemoryStream stream = new MemoryStream()) {
-			BinaryFormatter formatter = new BinaryFormatter();
-			formatter.Serialize(stream, itemInfo);
-			return stream.ToArray();
-		}
 	}
 }
 

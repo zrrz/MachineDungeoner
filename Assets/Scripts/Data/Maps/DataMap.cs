@@ -10,10 +10,6 @@ public class DataMap<T> : MonoBehaviour {
         dataMap = new Dictionary<ushort, T>();
     }
 
-//    public void AddTile(ushort id, bool isPlaceable, Texture2D texture, string name, byte width, byte height, byte collisionType, byte allowedLayers) {
-//        AddTile(id, new TileInfo(id, isPlaceable, texture, name, width, height, collisionType, allowedLayers));
-//    }
-
     public void AddData(ushort id, T data) {
         if (!dataMap.ContainsKey(id))
         {
