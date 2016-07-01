@@ -9,7 +9,7 @@ public class TileMap : DataMap<TileInfo> {
     
     static TileMap s_instance;
 
-    public TileMap Instance {
+    public static TileMap Instance {
         get {
             if (s_instance != null)
             {
@@ -40,7 +40,7 @@ public class TileMap : DataMap<TileInfo> {
     public void AddData(
         ushort tileID, 
         string name, 
-		byte[] texture, 
+        Sprite texture, 
         byte numDroppedItems, 
         ushort[] itemIDs, 
         byte width, 

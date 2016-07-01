@@ -7,14 +7,14 @@ using UnityEngine;
 public class BaseInfo {
 
 	public string name;
-	public byte[] texture; //SHOULD be a pointer to the loaded texture and not replicate
+    public Sprite texture; //SHOULD be a pointer to the loaded texture and not replicate
 
-	// Unity only
-	public Texture2D GetTexture() {
-		Texture2D tex = new Texture2D(2, 2); //Size doesn't matter
-		tex.LoadImage(texture);
-		return tex;
-	}
+//	// Unity only
+//	public Texture2D GetTexture() {
+//		Texture2D tex = new Texture2D(2, 2); //Size doesn't matter
+//		tex.LoadImage(texture);
+//		return tex;
+//	}
 
 	/// <summary>
 	/// Deserialize the data byte array into a TileInfo.

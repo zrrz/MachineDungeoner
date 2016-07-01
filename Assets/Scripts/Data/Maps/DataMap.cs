@@ -26,7 +26,7 @@ public class DataMap<T> : MonoBehaviour {
         if(dataMap.TryGetValue(id, out tileInfo))
             return tileInfo;
         else
-            Debug.LogError("Trying to get a ID from " + this.ToString() + " that doesnt exist");
+            Debug.LogError("Trying to get ID: " + id + " from " + this.ToString() + " that doesnt exist");
         return default(T);
     }
 }

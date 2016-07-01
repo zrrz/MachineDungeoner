@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 849547fac67494e2ca34bdfa8e2c9981
-timeCreated: 1467082510
+guid: 8b28b56fae5194ab6a6ac4667d4ae3ee
+timeCreated: 1467084103
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: square-rounded-64_0
+    21300000: dirt_0
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -30,7 +30,7 @@ TextureImporter:
   textureFormat: -1
   maxTextureSize: 2048
   textureSettings:
-    filterMode: 0
+    filterMode: -1
     aniso: 16
     mipBias: -1
     wrapMode: 1
@@ -44,7 +44,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 48, w: 32}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 16
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -52,13 +52,13 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: square-rounded-64_0
+    - name: dirt_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 47
+        y: 180
         width: 16
-        height: 32
+        height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

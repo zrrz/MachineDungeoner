@@ -20,7 +20,7 @@ public class ItemInfo : BaseInfo {
 	public ItemInfo(
 		ushort itemID, 
 		string name, 
-		byte[] texture,
+        Sprite texture,
 		byte rarity,
 		byte allowedLayers,
 		ushort backTileID,

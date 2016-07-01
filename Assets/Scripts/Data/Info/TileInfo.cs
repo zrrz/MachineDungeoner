@@ -43,7 +43,7 @@ public class TileInfo : BaseInfo {
 	public TileInfo(
 		ushort tileID, 
 		string name, 
-		byte[] texture, 
+        Sprite texture, 
 		byte numDroppedItems, 
 		ushort[] itemIDs, 
 		byte width, 

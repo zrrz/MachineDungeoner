@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using System.Collections.Generic;
 using System.Threading;
 
 public class WorldManager : MonoBehaviour {
@@ -8,11 +8,16 @@ public class WorldManager : MonoBehaviour {
     static WorldManager instance;
     public static WorldManager Instance { get { return instance; } }
 
-    static int worldHeight = -1, worldWidth = -1;
+    public static int worldHeight = -1, worldWidth = -1;
 
     public ushort[,] frontWorldData;
     public ushort[,] midWorldData;
     public ushort[,] backWorldData;
+
+//    [HideInInspector]
+    public List<Anchor> anchors;
+
+    const int ANCHOR_EFFECT_WIDTH = 15, ANCHOR_EFFECT_HEIGHT = 10;
 
 	void Awake () {
         if (instance != null)
@@ -30,8 +35,21 @@ public class WorldManager : MonoBehaviour {
         StartCoroutine(GenerateWorld(8400, 2400));
     }
 
-	void Update () {
-	
+    //TODO call this like 10x/frame somewhere
+	void SlowUpdate () {
+        foreach (Anchor anchor in anchors)
+        {
+            Vector2 anchorPos = new Vector2(0, 0); //TODO convert world to tile coords
+            for(int x = (int)anchorPos.x - ANCHOR_EFFECT_WIDTH; x < (int)anchorPos.x + ANCHOR_EFFECT_WIDTH; x++) { //TODO not calc max each iteration
+                for(int y = (int)anchorPos.y - ANCHOR_EFFECT_HEIGHT; y < (int)anchorPos.y + ANCHOR_EFFECT_HEIGHT; y++) { //Might be upside down?
+                    //TODO update WorldData[x,y]
+                }
+            }
+        }
+
+        //TODO spawn monsters for anchor
+
+        
 	}
 
     class ThreadAllocData : object {
@@ -56,15 +74,15 @@ public class WorldManager : MonoBehaviour {
         Debug.Log("Building world");
         UIManager.Instance.ChangeLoadingBar("Allocating world data", 0.2f);
 
-        int rows = 10;
-        Thread[] worldBuildThreads = new Thread[rows];
-        for (int i = 0; i < rows; i++)
-        {
-            worldBuildThreads[i] = new Thread(WorldManager.AllocateWorld);
-            worldBuildThreads[i].Start(new ThreadAllocData(0, worldWidth, worldHeight/rows * i, worldHeight/rows));
-        }
+//        int rows = 10;
+//        Thread[] worldBuildThreads = new Thread[rows];
+//        for (int i = 0; i < rows; i++)
+//        {
+//            worldBuildThreads[i] = new Thread(WorldManager.AllocateWorld);
+//            worldBuildThreads[i].Start(new ThreadAllocData(0, worldWidth, worldHeight/rows * i, worldHeight/rows));
+//        }
 
-//        WorldManager.AllocateWorld(new ThreadAllocData(0, worldWidth, 0, worldHeight));
+        WorldManager.AllocateWorld(new ThreadAllocData(0, worldWidth, 0, worldHeight));
 
 //        Thread thread = new Thread(WorldManager.AllocateWorld);
 //        thread.Start(new ThreadAllocData(0, worldWidth, 0, worldHeight/10));
@@ -103,9 +121,14 @@ public class WorldManager : MonoBehaviour {
             {
                 WorldManager.Instance.frontWorldData[i, j] = 1;
                 WorldManager.Instance.midWorldData[i, j] = 1;
-                WorldManager.Instance.backWorldData[i, j] = 1;
+                WorldManager.Instance.backWorldData[i, j] = (ushort)Random.Range(1, 3);
             }
         }
         worldBuildingProgress += 0.1f;
+    }
+
+    public Vector2 GetTileIndices(Vector3 pos) {
+//        throw System.NotImplementedException();
+        return anchors[0].transform.position;
     }
 }
